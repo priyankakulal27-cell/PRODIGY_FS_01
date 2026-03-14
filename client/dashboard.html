@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .dashboard-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 400px; text-align: center; }
+        h1 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 30px; }
+        .user-id { background: #e9ecef; padding: 10px; border-radius: 5px; font-family: monospace; font-weight: bold; color: #007bff; }
+        .logout-btn { background: #ff4757; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: background 0.3s; }
+        .logout-btn:hover { background: #ff6b81; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-card">
+        <h1>Welcome Back!</h1>
+        <p>You have successfully accessed the secure portal.</p>
+        
+        <div style="margin-bottom: 30px;">
+            <small>Internal Session ID:</small>
+            <div id="user-display" class="user-id">Verifying Session...</div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // 1. SECURITY CHECK: Kick out users who don't have a token
+        const token = localStorage.getItem('auth-token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+
+        // 2. FETCH DATA: Call the protected route we set up in index.js
+        async function getDashboardData() {
+            try {
+                const response = await fetch('http://localhost:5000/api/user/profile', {
+                    method: 'GET',
+                    headers: {
+                        'auth-token': token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Display the User ID returned from the JWT
+                    document.getElementById('user-display').innerText = data.id;
+                } else {
+                    // If token is expired or invalid, log them out
+                    logout();
+                }
+            } catch (err) {
+                document.getElementById('user-display').innerText = "Server Error";
+                console.error("Dashboard Error:", err);
+            }
+        }
+
+        // 3. LOGOUT: Clear local storage and go back to login
+        function logout() {
+            localStorage.removeItem('auth-token');
+            window.location.href = 'index.html';
+        }
+
+        // Run the data fetch on load
+        getDashboardData();
+    </script>
+</body>
+</html>

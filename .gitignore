@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment Variables (CRITICAL: This keeps your DB password safe)
+.env
+
+# Prisma (if you are using SQLite locally or want to hide generated files)
+/prisma/dev.db
+/prisma/dev.db-journal
+
+# Debugging and Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Build folders (if you are using a React build)
+/client/dist
+/client/build
