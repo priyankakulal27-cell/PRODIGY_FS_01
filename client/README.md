@@ -1,5 +1,5 @@
 # Secure User Authentication System
-Prodigy InfoTech - Full Stack Web Development Internship (Task 1)
+#ProdigyInfoTech - Full Stack Web Development Internship (Task 1)
 
 A robust full-stack authentication system built using the MERN stack (MongoDB, Express, React, Node.js). This project implements secure user registration, login, and protected dashboard access using JSON Web Tokens (JWT).
 
